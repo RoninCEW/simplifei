@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="Theme.Simplifei" parent="android:Theme.Material.Light.NoActionBar" />
+    <style name="Theme.Simplifei" parent="android:Theme.Wallpaper.NoTitleBar.Fullscreen" />
+    <style name="Theme.Oot" parent="android:Theme.Holo.NoActionBar.Fullscreen">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:backgroundDimEnabled">false</item>
+        <item name="android:minHeight" />
+    </style>
 </resources>
