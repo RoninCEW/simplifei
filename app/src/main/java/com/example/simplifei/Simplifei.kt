@@ -18,10 +18,12 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.MenuBook
 import androidx.compose.material.icons.rounded.Add
 import androidx.compose.material.icons.rounded.CallMissedOutgoing
+import androidx.compose.material.icons.rounded.KeyboardArrowUp
 import androidx.compose.material.icons.rounded.Movie
 import androidx.compose.material.icons.rounded.SmartDisplay
 import androidx.compose.material.icons.rounded.TravelExplore
@@ -68,33 +70,47 @@ fun Simplifei(apps: List<App> = APPS) {
     val orientation = LocalConfiguration.current.orientation
     var isDrawerOpen by remember { mutableStateOf(false) }
 
-    SettingsRow()
-
-    if (isDrawerOpen) {
-        AppDrawer(DRAWER_APPS) { isDrawerOpen = false }
-    }
-
-    val modifier = Modifier
-        .fillMaxSize()
-        .pointerInput(Unit) {
-            detectVerticalDragGestures { change, dragAmount ->
-                change.consume()
-                if (dragAmount < -10) isDrawerOpen = true
-            }
+    Column(Modifier.fillMaxSize()) {
+        SettingsRow()
+        if (isDrawerOpen) {
+            AppDrawer(DRAWER_APPS) { isDrawerOpen = false }
         }
 
-    if (orientation == Configuration.ORIENTATION_PORTRAIT) {
-        Column(
-            modifier,
-            verticalArrangement = Arrangement.SpaceEvenly,
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) { AppList(apps) }
-    } else {
+        val modifier = Modifier
+            .fillMaxWidth()
+            .weight(1f)
+            .pointerInput(Unit) {
+                detectVerticalDragGestures { change, dragAmount ->
+                    change.consume()
+                    if (dragAmount < -10) isDrawerOpen = true
+                }
+            }
+
+        if (orientation == Configuration.ORIENTATION_PORTRAIT) {
+            Column(
+                modifier,
+                verticalArrangement = Arrangement.SpaceEvenly,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) { AppList(apps) }
+        } else {
+            Row(
+                modifier,
+                horizontalArrangement = Arrangement.SpaceEvenly,
+                verticalAlignment = Alignment.CenterVertically
+            ) { AppList(apps) }
+        }
+
         Row(
-            modifier,
-            horizontalArrangement = Arrangement.SpaceEvenly,
-            verticalAlignment = Alignment.CenterVertically
-        ) { AppList(apps) }
+            Modifier
+                .fillMaxWidth()
+                .windowInsetsPadding(WindowInsets.navigationBars),
+            horizontalArrangement = Arrangement.Center
+        ) {
+            Icon(
+                Icons.Rounded.KeyboardArrowUp, contentDescription = "Open Drawer",
+                tint = Color.White
+            )
+        }
     }
 }
 
